@@ -21,7 +21,7 @@ services:
     depends_on:
       - hub-db
     networks:
-      - jupyterhub-network
+      - ${DOCKER_NETWORK_NAME}
       - proxy
     labels:
       - traefik.backend=hub
@@ -74,5 +74,9 @@ volumes:
 
 networks:
   default:
-    external:
+    internal:
       name: ${DOCKER_NETWORK_NAME}
+      external: false
+  proxy:
+    external: true
+  
