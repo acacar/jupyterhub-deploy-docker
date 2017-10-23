@@ -21,7 +21,7 @@ services:
     depends_on:
       - hub-db
     networks:
-      - jupyterhub
+      - jupyterhub-network
       - proxy
     labels:
       - traefik.backend=hub
