@@ -20,6 +20,14 @@ services:
   hub:
     depends_on:
       - hub-db
+    networks:
+      - jupyterhub
+      - proxy
+    labels:
+      - traefik.backend=hub
+      - traefik.frontend.rule=Host:notebooks.kansil.org
+      - traefik.docker.network=proxy
+      - traefik.port=80 
     build:
       context: .
       dockerfile: Dockerfile.jupyterhub
