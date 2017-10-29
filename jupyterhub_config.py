@@ -3,6 +3,7 @@
 
 # Configuration file for JupyterHub
 import os
+from oauthenticator.google import GoogleOAuthenticator
 
 c = get_config()
 
@@ -52,7 +53,7 @@ c.JupyterHub.port = 80
 #c.JupyterHub.ssl_cert = os.environ['SSL_CERT']
 
 # Authenticate users with GitHub OAuth
-c.JupyterHub.authenticator_class = 'oauthenticator.GoogleOAuthenticator'
+c.JupyterHub.authenticator_class = GoogleOAuthenticator
 c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
 
 # Persist hub data on volume mounted inside container

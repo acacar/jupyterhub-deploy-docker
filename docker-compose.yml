@@ -2,7 +2,13 @@
 # Distributed under the terms of the Modified BSD License.
 
 # JupyterHub docker-compose configuration file
-version: "2"
+version: "3"
+
+networks:
+  jupyterhub-network:
+    external: true
+  proxy:
+    external: true
 
 services:
   hub-db:
@@ -16,6 +22,10 @@ services:
       - secrets/postgres.env
     volumes:
       - "db:${DB_VOLUME_CONTAINER}"
+    labels:
+      - traefik.enable=false
+    networks:
+      - ${DOCKER_NETWORK_NAME}
 
   hub:
     depends_on:
@@ -27,6 +37,7 @@ services:
       - traefik.backend=hub
       - traefik.frontend.rule=Host:notebooks.kansil.org
       - traefik.docker.network=proxy
+      - traefik.frontend.passHostHeader=true
       - traefik.port=80 
     build:
       context: .
@@ -72,11 +83,4 @@ volumes:
     external:
       name: ${DB_VOLUME_HOST}
 
-networks:
-  default:
-    internal:
-      name: ${DOCKER_NETWORK_NAME}
-      external: false
-  proxy:
-    external: true
   
